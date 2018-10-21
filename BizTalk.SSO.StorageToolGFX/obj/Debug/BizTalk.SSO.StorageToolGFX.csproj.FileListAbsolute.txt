@@ -1,0 +1,15 @@
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\bin\Debug\BizTalk.SSO.StorageToolGFX.exe.config
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\bin\Debug\BizTalk.SSO.StorageToolGFX.exe
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\bin\Debug\BizTalk.SSO.StorageToolGFX.pdb
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\obj\Debug\BizTalk.SSO.StorageToolGFX.csprojAssemblyReference.cache
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\obj\Debug\MainWindow.g.cs
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\obj\Debug\App.g.cs
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\obj\Debug\BizTalk.SSO.StorageToolGFX_MarkupCompile.cache
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\obj\Debug\BizTalk.SSO.StorageToolGFX_MarkupCompile.lref
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\obj\Debug\MainWindow.baml
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\obj\Debug\BizTalk.SSO.StorageToolGFX.g.resources
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\obj\Debug\BizTalk.SSO.StorageToolGFX.Properties.Resources.resources
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\obj\Debug\BizTalk.SSO.StorageToolGFX.csproj.GenerateResource.cache
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\obj\Debug\BizTalk.SSO.StorageToolGFX.csproj.CoreCompileInputs.cache
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\obj\Debug\BizTalk.SSO.StorageToolGFX.exe
+F:\MyWork\BTSSO\BizTalk.SSO.StorageToolGFX\obj\Debug\BizTalk.SSO.StorageToolGFX.pdb
