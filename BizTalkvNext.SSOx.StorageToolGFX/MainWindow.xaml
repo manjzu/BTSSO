@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BizTalkvNext.SSOxStorageToolGFX"
+        xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         mc:Ignorable="d"
         Title="BizTalk ESSO Storage Tool GFX v3.0" Height="600" Width="700" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="Resources/128x128-px-database-icon-256x256-png-256.png" UseLayoutRounding="False">
     <DockPanel HorizontalAlignment="Left" Height="571" LastChildFill="False" VerticalAlignment="Top" Width="690" Background="WhiteSmoke">
@@ -21,15 +22,14 @@
             <Menu HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" Width="690">
                 <MenuItem Header="File" HeaderStringFormat="">
                     <MenuItem Header="Import SSO Config" Name="miImportSSOConfig" Click="miImportSSOConfig_Click"/>
-                    <MenuItem Header="Export SSO Config" Name="MiExportSSOConfig"/>
+                    <MenuItem Header="Export SSO Config" Name="MiExportSSOConfig" Click="MiExportSSOConfig_Click"/>
                     <MenuItem Header="Export Multiple Configs" Name="miExportMultipleConfigs"/>
                     <Separator/>
                     <MenuItem Header="Import Encrypted SSO Config" Name="miImportExcryptedSSOConfig"/>
                     <MenuItem Header="Export Encrypted SSO Config" Name="miExportEncryptedSSOConfig"/>
                     <MenuItem Header="Export Encrypted Multiple Configs" Name="miExportEncryptedMultipleConfigs" />
                     <Separator/>
-                    <MenuItem Header="Exit" Name="miExit" Click="miExit_Click"/>
-                    <MediaElement Height="100" Width="100"/>
+                    <MenuItem Header="Exit" Name="miExit" Click="miExit_Click"/>                    
                 </MenuItem>
                 <MenuItem Header="Compatibility">
                     <MenuItem Header="Windows Application" IsCheckable="True" IsChecked="True" Name="miWindowsApplication"/>
@@ -44,17 +44,20 @@
                     <MenuItem Header="Clear All" Name="miClearALl" Click="miClearALl_Click"/>
                 </MenuItem>
                 <MenuItem Header="About">
-                    <MenuItem Header="About Me" Name="miAboutMe"/>
+                    <MenuItem Header="About Me" Name="miAboutMe" Click="miAboutMe_Click"/>
                     <MenuItem Header="Help" Name="miHelp"/>
                 </MenuItem>
             </Menu>
-            <DataGrid HorizontalAlignment="Left" Height="284" Margin="29,165,0,0" VerticalAlignment="Top" Width="591" AutoGenerateColumns="False" Name="dgvKeyValue" MinRowHeight="10" RowHeight="25" RowDetailsVisibilityMode="Visible">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="KeyName" Width="*"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Value" Width="*"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Is Masked?"/>
-                </DataGrid.Columns>                
-            </DataGrid>
+            <WindowsFormsHost HorizontalAlignment="Left" Height="276" Margin="33,164,0,0" VerticalAlignment="Top" Width="617" Name="winformshost">
+                <forms:DataGridView >
+                    <!--<forms:DataGridView.Columns>
+                        <forms:DataGridViewColumn HeaderText="KeyValue"/>
+                        <forms:DataGridViewColumn HeaderText="Value"/>
+                        <forms:DataGridViewColumn HeaderText="Is Masked?"/>
+                    </forms:DataGridView.Columns>-->
+
+                </forms:DataGridView>
+            </WindowsFormsHost>
         </Grid>
         <Grid>
             <StackPanel Margin="-662,30,473,0" Height="115" VerticalAlignment="Top">
@@ -78,8 +81,8 @@
             </StackPanel>
 
             <Grid Margin="-192,30,0,0" Height="115" VerticalAlignment="Top" HorizontalAlignment="Left" Width="88">
-                <Button Content="Browse Apps" Margin="0,0,0,90"/>
-                <Button Content="Refresh" Margin="0,31,0,59"/>
+                <Button Content="Browse Apps" Margin="0,0,0,90" Name="btBrowseApps"/>
+                <Button Content="Refresh" Margin="0,31,0,59" Name="btRefresh" Click="btRefresh_Click"/>
                 <CheckBox Name="cbAutoPopulateSSOGroups" Content="Auto Populate SSO Groups" Margin="0,87,-84,13" Checked="cbAutoPopulateSSOGroups_Checked" />
             </Grid>
 
@@ -89,9 +92,9 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Delete" Grid.Column="0" Width="100"/>
-                <Button Content="Modify" Grid.Column="1" Width="100"/>
-                <Button Content="Create" Grid.Column="2" Width="100"/>
+                <Button Content="Delete" Grid.Column="0" Width="100" Name="btDelete" Click="btDelete_Click"/>
+                <Button Content="Modify" Grid.Column="1" Width="100" Name="btModify" Click="btModify_Click"/>
+                <Button Content="Create" Grid.Column="2" Width="100" Name="btCreate" Click="btCreate_Click"/>
             </Grid>
 
         </Grid>
