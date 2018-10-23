@@ -112,7 +112,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="BizTalkvNext.SSO.StorageToolGFX.pfx" />
     <None Include="BizTalkvNext.SSOx.StorageToolGFX.snk" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
