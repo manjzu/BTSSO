@@ -40,7 +40,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>BizTalkvNext.SSO.StorageToolGFX.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>BizTalkvNext.SSOx.StorageToolGFX.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
@@ -113,6 +113,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="BizTalkvNext.SSO.StorageToolGFX.pfx" />
+    <None Include="BizTalkvNext.SSOx.StorageToolGFX.snk" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
