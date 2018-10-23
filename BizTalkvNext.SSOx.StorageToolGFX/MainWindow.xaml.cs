@@ -474,5 +474,11 @@ namespace BizTalkvNext.SSOxStorageToolGFX
                 int num1 = (int)System.Windows.Forms.MessageBox.Show("Please enter an application name for deletion.", "Warning", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Exclamation);
             }
         }
+
+        private void miHelp_Click(object sender, RoutedEventArgs e)
+        {
+            int num = (int)System.Windows.Forms.MessageBox.Show("For Interop dll version issues, copy\r\nMicrosoft.EnterpriseSingleSignOn.Interop.dll version 9.0.1000.0\r\nto the root directory of tool. ");
+
+        }
     }
 }

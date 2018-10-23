@@ -45,7 +45,7 @@
                 </MenuItem>
                 <MenuItem Header="About">
                     <MenuItem Header="About Me" Name="miAboutMe" Click="miAboutMe_Click"/>
-                    <MenuItem Header="Help" Name="miHelp"/>
+                    <MenuItem Header="Help" Name="miHelp" Click="miHelp_Click"/>
                 </MenuItem>
             </Menu>
             <WindowsFormsHost HorizontalAlignment="Left" Height="276" Margin="33,164,0,0" VerticalAlignment="Top" Width="617" Name="winformshost">
