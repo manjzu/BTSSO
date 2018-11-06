@@ -23,22 +23,22 @@
                 <MenuItem Header="File" HeaderStringFormat="">
                     <MenuItem Header="Import SSO Config" Name="miImportSSOConfig" Click="miImportSSOConfig_Click"/>
                     <MenuItem Header="Export SSO Config" Name="MiExportSSOConfig" Click="MiExportSSOConfig_Click"/>
-                    <MenuItem Header="Export Multiple Configs" Name="miExportMultipleConfigs"/>
+                    <MenuItem Header="Export Multiple Configs" Name="miExportMultipleConfigs" Click="miExportMultipleConfigs_Click"/>
                     <Separator/>
-                    <MenuItem Header="Import Encrypted SSO Config" Name="miImportExcryptedSSOConfig"/>
-                    <MenuItem Header="Export Encrypted SSO Config" Name="miExportEncryptedSSOConfig"/>
-                    <MenuItem Header="Export Encrypted Multiple Configs" Name="miExportEncryptedMultipleConfigs" />
+                    <MenuItem Header="Import Encrypted SSO Config" Name="miImportExcryptedSSOConfig" Click="miImportExcryptedSSOConfig_Click"/>
+                    <MenuItem Header="Export Encrypted SSO Config" Name="miExportEncryptedSSOConfig" Click="miExportEncryptedSSOConfig_Click"/>
+                    <MenuItem Header="Export Encrypted Multiple Configs" Name="miExportEncryptedMultipleConfigs" Click="miExportEncryptedMultipleConfigs_Click" />
                     <Separator/>
                     <MenuItem Header="Exit" Name="miExit" Click="miExit_Click"/>                    
                 </MenuItem>
                 <MenuItem Header="Compatibility">
-                    <MenuItem Header="Windows Application" IsCheckable="True" IsChecked="True" Name="miWindowsApplication"/>
-                    <MenuItem Header="MMC Console" IsCheckable="True" Name="miMMCConsole"/>
+                    <MenuItem Header="Windows Application" IsCheckable="True" IsChecked="True" Name="miWindowsApplication" Click="miWindowsApplication_Click"/>
+                    <MenuItem Header="MMC Console" IsCheckable="True" Name="miMMCConsole" Click="miMMCConsole_Click"/>
                 </MenuItem>
                 <MenuItem Header="Tools">
-                    <MenuItem Header="Encrypt" Name="miEncrypt"/>
-                    <MenuItem Header="Decrypt" Name="miDecrypt"/>
-                    <MenuItem Header="Fix Compatibility Errors" Name="miFixCompatibilityErrors"/>
+                    <MenuItem Header="Encrypt" Name="miEncrypt" Click="miEncrypt_Click"/>
+                    <MenuItem Header="Decrypt" Name="miDecrypt" Click="miDecrypt_Click"/>
+                    <MenuItem Header="Fix Compatibility Errors" Name="miFixCompatibilityErrors" Click="miFixCompatibilityErrors_Click"/>
                 </MenuItem>
                 <MenuItem Header="View">
                     <MenuItem Header="Clear All" Name="miClearALl" Click="miClearALl_Click"/>
@@ -49,7 +49,7 @@
                 </MenuItem>
             </Menu>
             <WindowsFormsHost HorizontalAlignment="Left" Height="276" Margin="33,164,0,0" VerticalAlignment="Top" Width="617" Name="winformshost">
-                <forms:DataGridView >
+                <forms:DataGridView RowsAdded="DataGridView_RowsAdded" >                    
                     <!--<forms:DataGridView.Columns>
                         <forms:DataGridViewColumn HeaderText="KeyValue"/>
                         <forms:DataGridViewColumn HeaderText="Value"/>
@@ -81,7 +81,7 @@
             </StackPanel>
 
             <Grid Margin="-192,30,0,0" Height="115" VerticalAlignment="Top" HorizontalAlignment="Left" Width="88">
-                <Button Content="Browse Apps" Margin="0,0,0,90" Name="btBrowseApps"/>
+                <Button Content="Browse Apps" Margin="0,0,0,90" Name="btBrowseApps" Click="btBrowseApps_Click"/>
                 <Button Content="Refresh" Margin="0,31,0,59" Name="btRefresh" Click="btRefresh_Click"/>
                 <CheckBox Name="cbAutoPopulateSSOGroups" Content="Auto Populate SSO Groups" Margin="0,87,-84,13" Checked="cbAutoPopulateSSOGroups_Checked" />
             </Grid>

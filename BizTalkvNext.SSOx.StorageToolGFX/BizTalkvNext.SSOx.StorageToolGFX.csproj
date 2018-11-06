@@ -77,6 +77,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Forms\SelectApp.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="SSO\ConfigurationPropertyBag.cs" />
     <Compile Include="SSO\SSOConfigHelper.cs" />
     <Compile Include="SSO\SSOConfigManager.cs" />
@@ -108,6 +111,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Forms\SelectApp.resx">
+      <DependentUpon>SelectApp.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

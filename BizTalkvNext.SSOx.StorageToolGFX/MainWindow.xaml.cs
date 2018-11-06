@@ -33,7 +33,6 @@ namespace BizTalkvNext.SSOxStorageToolGFX
         public MainWindow()
         {
             InitializeComponent();
-            this.initializeFields();
 
             DataGridViewTextBoxColumn dgtbc = new DataGridViewTextBoxColumn();
             dgtbc.HeaderText = "KeyName";
@@ -53,10 +52,20 @@ namespace BizTalkvNext.SSOxStorageToolGFX
             dgvc.HeaderText = "Is Masked?";
             dgvc.Width = 80;
             dgvc.Name = "clIsMask";
+
+            dgvc.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            dgvc.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+
             dgvKeyValue.Columns.Add(dgvc);
             dgvKeyValue.AutoResizeColumns();
 
+            //Event is assigned for added new default value for field "Is Masked?"
+            dgvKeyValue.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.DataGridView_RowsAdded);
+
             winformshost.Child = dgvKeyValue;
+
+            //Initiaze values
+            this.initializeFields();
         }
 
         private void cbAutoPopulateSSOGroups_Checked(object sender, RoutedEventArgs e)
@@ -88,10 +97,10 @@ namespace BizTalkvNext.SSOxStorageToolGFX
             //THis is not present in WPF
             System.Windows.Forms.OpenFileDialog ofdConfigFile = new System.Windows.Forms.OpenFileDialog();
 
-            ofdConfigFile.Filter = "SSO Config File(*.xml)|*.xml";           
-           
+            ofdConfigFile.Filter = "SSO Config File(*.xml)|*.xml";
+
             if (ofdConfigFile.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-            {               
+            {
                 return;
             }
             if (this.ImportConfiguration(ofdConfigFile.FileName))
@@ -159,7 +168,7 @@ namespace BizTalkvNext.SSOxStorageToolGFX
                 sfdConfigFile.FileName = "SSO_" + this.tbApplicationName.Text + ".xml";
 
                 if (sfdConfigFile.ShowDialog() != System.Windows.Forms.DialogResult.OK)
-                {                  
+                {
                     return;
                 }
 
@@ -270,7 +279,27 @@ namespace BizTalkvNext.SSOxStorageToolGFX
 
         private void miAboutMe_Click(object sender, RoutedEventArgs e)
         {
-            int num = (int)System.Windows.Forms.MessageBox.Show("For any issues and suggestions contact :\r\nmanjunathp@ymail.com\r\nThis tool is based on Microsoft.EnterpriseSingleSignOn.Interop 9.0.1000.0");
+            int num = (int)System.Windows.Forms.MessageBox.Show(@"This tool is based on Microsoft.EnterpriseSingleSignOn.Interop 9.0.1000.0
+            Old Features:
+                -Displays application list
+                - One click modification of key / value pairs
+                - One click of multiple application export.
+                - Doesn't display junk applications
+
+            Release verson 2.0.0.0 Summary:
+                -User accounts can be auto populated
+                - User accounts can now be edited
+                - fixed user accounts snapping issue for multiple export
+                - Lasted version support Microsoft.EnterpriseSingleSignOn.Interop 9.0.1000.0
+                - Microsoft MMC SSO config storage campatibilty support
+                - MD5 symmetric encrypt / decrypt support
+                        Release verson 3.0.0.0 Summary:                - Redesigned with WPF                - Duplicate Key Value scenario error handling within application                - Removed dll version dependency for Microsoft.EnterpriseSingleSignOn.Interop 
+            This fully customized tool.Initiator credits: Richard Serotor
+            
+            Help: copy the Microsoft.EnterpriseSingleSignOn.Interop 9.0 dll for legacy support
+                        For any issues and suggestions contact :    
+                Email   : manjunathp@ymail.com
+                Blog    : https://biztalk2all.wordpress.com");
         }
 
         private void btRefresh_Click(object sender, RoutedEventArgs e)
@@ -309,22 +338,24 @@ namespace BizTalkvNext.SSOxStorageToolGFX
         {
             if (this.tbApplicationName.Text != string.Empty)
             {
-                SSOPropBag ssoPropBag = new SSOPropBag();
-                ArrayList maskArray = new ArrayList();
-                foreach (DataGridViewRow row in (IEnumerable)this.dgvKeyValue.Rows)
-                {
-                    if (row.Cells["clKeyName"].Value != null && row.Cells["clKeyName"].Value.ToString() != string.Empty)
-                    {
-                        object ptrVar = row.Cells["clValue"].Value;
-                        ssoPropBag.Write(row.Cells["clKeyName"].Value.ToString(), ref ptrVar);
-                        if (row.Cells["clIsMask"].FormattedValue.ToString().ToLower() == "yes")
-                            maskArray.Add((object)268435456);
-                        else
-                            maskArray.Add((object)0);
-                    }
-                }
+                //Try-Catch is uplifted to handle - Duplicate Key value pair
                 try
                 {
+                    SSOPropBag ssoPropBag = new SSOPropBag();
+                    ArrayList maskArray = new ArrayList();
+                    foreach (DataGridViewRow row in (IEnumerable)this.dgvKeyValue.Rows)
+                    {
+                        if (row.Cells["clKeyName"].Value != null && row.Cells["clKeyName"].Value.ToString() != string.Empty)
+                        {
+                            object ptrVar = row.Cells["clValue"].Value;
+                            ssoPropBag.Write(row.Cells["clKeyName"].Value.ToString(), ref ptrVar);
+                            if (row.Cells["clIsMask"].FormattedValue.ToString().ToLower() == "yes")
+                                maskArray.Add((object)268435456);
+                            else
+                                maskArray.Add((object)0);
+                        }
+                    }
+
                     SSOConfigManager.CreateConfigStoreApplication(this.tbApplicationName.Text, this.tbApplicationDescription.Text, this.tbSSOAffliateAdminGrp.Text, this.tbSSOAdminGrp.Text, ssoPropBag, maskArray);
                     SSOConfigManager.SetConfigProperties(this.tbApplicationName.Text, ssoPropBag);
                     int num = (int)System.Windows.Forms.MessageBox.Show("Application Successfully Created", "Information", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
@@ -344,18 +375,28 @@ namespace BizTalkvNext.SSOxStorageToolGFX
         {
             SSOPropBag ssoPropBag = new SSOPropBag();
             ArrayList maskArray = new ArrayList();
-            foreach (DataGridViewRow row in (IEnumerable)this.dgvKeyValue.Rows)
+
+            //Try-Catch is added to handle - Duplicate Key value pair
+            try
             {
-                if (row.Cells["clKeyName"].Value != null && row.Cells["clKeyName"].Value.ToString() != string.Empty)
+                foreach (DataGridViewRow row in (IEnumerable)this.dgvKeyValue.Rows)
                 {
-                    string propName = row.Cells["clKeyName"].Value.ToString();
-                    object ptrVar = (object)row.Cells["clValue"].Value.ToString();
-                    ssoPropBag.Write(propName, ref ptrVar);
-                    if (row.Cells["clIsMask"].FormattedValue.ToString().ToLower() == "yes")
-                        maskArray.Add((object)268435456);
-                    else
-                        maskArray.Add((object)0);
+                    if (row.Cells["clKeyName"].Value != null && row.Cells["clKeyName"].Value.ToString() != string.Empty)
+                    {
+                        string propName = row.Cells["clKeyName"].Value.ToString();
+                        object ptrVar = (object)row.Cells["clValue"].Value.ToString();
+                        ssoPropBag.Write(propName, ref ptrVar);
+                        if (row.Cells["clIsMask"].FormattedValue.ToString().ToLower() == "yes")
+                            maskArray.Add((object)268435456);
+                        else
+                            maskArray.Add((object)0);
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                int num = (int)System.Windows.Forms.MessageBox.Show(ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                return;
             }
             string str1 = "";
             string str2 = "";
@@ -375,7 +416,7 @@ namespace BizTalkvNext.SSOxStorageToolGFX
                 str3 += "SSO User Group, ";
             else if (appAdminAcct != this.tbSSOAdminGrp.Text)
                 str3 += "SSO Admin Group";
-            if (str3 != string.Empty)                
+            if (str3 != string.Empty)
                 str1 = System.Windows.Forms.MessageBox.Show("Are you sure wish to modify: " + str3, "Confirm", System.Windows.Forms.MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK ? "CHANGE" : "DONTCHANGE";
             if (str1 != "DONTCHANGE")
             {
@@ -422,7 +463,7 @@ namespace BizTalkvNext.SSOxStorageToolGFX
                     if ((str2 == "CHANGE" || str1 == "CHANGE") && str2 != "DONTCHANGE")
                     {
                         SSOConfigManager.DeleteApplication(this.tbApplicationName.Text);
-                        SSOConfigManager.CreateConfigStoreApplication(this.tbApplicationName.Text, this.tbApplicationDescription.Text, this.tbSSOAffliateAdminGrp.Text, this.tbSSOAdminGrp.Text,  ssoPropBag, maskArray);
+                        SSOConfigManager.CreateConfigStoreApplication(this.tbApplicationName.Text, this.tbApplicationDescription.Text, this.tbSSOAffliateAdminGrp.Text, this.tbSSOAdminGrp.Text, ssoPropBag, maskArray);
                         SSOConfigManager.SetConfigProperties(this.tbApplicationName.Text, ssoPropBag);
                         if (str6 != string.Empty && str1 == "")
                         {
@@ -477,7 +518,141 @@ namespace BizTalkvNext.SSOxStorageToolGFX
 
         private void miHelp_Click(object sender, RoutedEventArgs e)
         {
-            int num = (int)System.Windows.Forms.MessageBox.Show("For Interop dll version issues, copy\r\nMicrosoft.EnterpriseSingleSignOn.Interop.dll version 9.0.1000.0\r\nto the root directory of tool. ");
+            int num = (int)System.Windows.Forms.MessageBox.Show(@"For Interop dll version issues, copy Microsoft.EnterpriseSingleSignOn.Interop.dll version 9.0.1000.0 to the root directory of tool.
+            File formats:
+            *.sso - encrypted MMC console
+            *.xml - xml legacy format
+            *.ssox - encrypted legacy format
+            *.encrypt - encrypted file
+            *.decrypt - decrypted file
+
+            'Fix compatibility errors': This is irreversible fix, this modifies the data in the SSODB");
+        }
+
+        private void miExportMultipleConfigs_Click(object sender, RoutedEventArgs e)
+        {
+
+            //THis is not present in WPF
+            System.Windows.Forms.FolderBrowserDialog fbdConfigFolder = new System.Windows.Forms.FolderBrowserDialog();
+
+            SelectApp selectApp = new SelectApp();
+            selectApp.SetListBoxSelectMode = System.Windows.Forms.SelectionMode.MultiSimple;
+            string str = "";
+            string path = "";
+            if (selectApp.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+                return;
+            if (fbdConfigFolder.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string guid = Guid.NewGuid().ToString();
+                path = fbdConfigFolder.SelectedPath;
+                foreach (object appNames in selectApp.AppNamesList)
+                {
+                    if (this.ExportXmlConfigurationByApplication(appNames.ToString(), path, guid))
+                        str = str + appNames.ToString() + ", ";
+                }
+            }
+            int num = (int)System.Windows.Forms.MessageBox.Show("Applications " + str.TrimEnd(',', ' ') + " are successfully exported to path: " + path, "Information", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+        }
+
+        /// <summary>
+        /// Defaulting new row values - especially field "Is Masked?"
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DataGridView_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            foreach (DataGridViewRow row in (IEnumerable)this.dgvKeyValue.Rows)
+            {
+                if (row.IsNewRow)
+                {
+                    row.Cells["clKeyName"].Value = (object)"";
+                    row.Cells["clValue"].Value = (object)"";
+                    row.Cells["clIsMask"].Value = (object)"Yes";
+                }
+            }
+        }
+
+        private void btBrowseApps_Click(object sender, RoutedEventArgs e)
+        {
+            this.initializeFields();
+            SelectApp selectApp = new SelectApp();
+            selectApp.SetListBoxSelectMode = System.Windows.Forms.SelectionMode.One;
+            if (selectApp.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                this.tbApplicationName.Text = selectApp.ApplicationName;
+                string text = this.tbApplicationName.Text;
+                if (text != string.Empty)
+                {
+                    try
+                    {
+                        string description;
+                        string contactInfo;
+                        string appUserAcct;
+                        string appAdminAcct;
+                        HybridDictionary configProperties = SSOConfigManager.GetConfigProperties(text, out description, out contactInfo, out appUserAcct, out appAdminAcct);
+                        this.tbApplicationDescription.Text = description;
+                        this.tbSSOAdminGrp.Text = appAdminAcct;
+                        this.tbSSOAffliateAdminGrp.Text = appUserAcct;
+                        foreach (DictionaryEntry dictionaryEntry in configProperties)
+                        {
+                            DataGridViewRow row = this.dgvKeyValue.Rows[this.dgvKeyValue.Rows.Add()];
+                            row.Cells["clKeyName"].Value = (object)dictionaryEntry.Key.ToString();
+                            row.Cells["clValue"].Value = (object)dictionaryEntry.Value.ToString();
+                            row.Cells["clIsMask"].Value = (object)"Yes";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        int num = (int)System.Windows.Forms.MessageBox.Show("Error Occured. Details: " + ex.Message.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                    }
+                }
+                else
+                {
+                    int num1 = (int)System.Windows.Forms.MessageBox.Show("Please enter application name.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
+            selectApp.Close();
+        }
+
+        private void miImportExcryptedSSOConfig_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void miExportEncryptedSSOConfig_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void miExportEncryptedMultipleConfigs_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void miWindowsApplication_Click(object sender, RoutedEventArgs e)
+        {
+            miWindowsApplication.IsChecked = true;
+            miMMCConsole.IsChecked = false;
+        }
+
+        private void miMMCConsole_Click(object sender, RoutedEventArgs e)
+        {
+            miWindowsApplication.IsChecked = false;
+            miMMCConsole.IsChecked = true;
+        }
+
+        private void miEncrypt_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void miDecrypt_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void miFixCompatibilityErrors_Click(object sender, RoutedEventArgs e)
+        {
 
         }
     }
